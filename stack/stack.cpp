@@ -9,7 +9,7 @@
 using namespace std;
 
 template <typename StackType> class GenericStack {
-    private:
+    protected:
         StackType *arr = NULL;
         int size, top = 0;
     public:
@@ -44,7 +44,7 @@ template <typename StackType> class GenericStack {
                 return this->arr[this->top];
             }
             else
-                return '\0';
+                return 1;
         }
 
         void printArr() {
@@ -52,9 +52,25 @@ template <typename StackType> class GenericStack {
         }
 };
 
-int main() {
+template <typename T> class PalindromeStack : public GenericStack<T> {
+    public:
+        PalindromeStack(int size = 5) : GenericStack<T>(size) {}
+        bool is_palindrome() {
+            bool palindrome = true;
+            forcn(i, palindrome, this->size/2) {
+                if (this->arr[i] != this->arr[this->size - 1 - i])
+                    palindrome = false;
+            }
+            return palindrome;
+        }
+        int getSize() {
+            return this->size;
+        }
+};
+
+void useStackPalindrome() {
     string s = "reconocer";
-    GenericStack <char> *stack = new GenericStack<char>(s.size());
+    PalindromeStack <char> *stack = new PalindromeStack<char>(s.size());
     forn(i, s.size()) {
         stack->push(s[i]);
     }
@@ -65,8 +81,15 @@ int main() {
     }
     
     cout << "pop: " << stack->pop() << endl;
+
+    cout << "size of string: " << s.size() << endl;
+    cout << "size of stack: " << s.size() << endl;
+    cout << "palindromo? " << boolalpha << stack->is_palindrome() << endl;
     
     delete stack;
+}
 
+int main() {
+    useStackPalindrome();
     return 0;
 }
