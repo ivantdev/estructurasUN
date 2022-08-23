@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <string>
 
 #define forn(i,n) for(int i=0;i<int(n);i++)
@@ -9,14 +8,14 @@
 
 using namespace std;
 
-template <typename T> class GenericStack {
+template <typename StackType> class GenericStack {
     private:
-        T *arr = NULL;
+        StackType *arr = NULL;
         int size, top = 0;
     public:
         GenericStack(int size = 5) {
             this->size = size;
-            this->arr = new T[size];
+            this->arr = new StackType[size];
         }
         ~GenericStack() {
             delete [] this->arr;
@@ -30,7 +29,7 @@ template <typename T> class GenericStack {
             return this->top == 0;
         }
 
-        void push(T x) {
+        void push(StackType x) {
             if (! this->full()) {
                 this->arr[this->top] = x;
                 this->top++;
@@ -39,11 +38,10 @@ template <typename T> class GenericStack {
                 cout << "full" << endl;
         }
 
-        T pop() {
+        StackType pop() {
             if (! this->empty()) {
                 this->top--;
-                T a = this->arr[this->top];
-                return a;
+                return this->arr[this->top];
             }
             else
                 return '\0';
