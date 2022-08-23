@@ -1,5 +1,7 @@
 #include <iostream>
-#include <string>
+#include <vector>
+
+// #include <ctype.h>
 
 #define forn(i,n) for(int i=0;i<int(n);i++)
 #define forsn(i,s,n) for(int i=int(s); i<int(n);i++)
@@ -8,16 +10,26 @@
 
 using namespace std;
 
+// abstract class for stack
 template <typename StackType> class GenericStack {
+    public:
+        virtual bool full() = 0;
+        virtual bool empty() = 0;
+        virtual void push(StackType x) = 0;
+        virtual StackType pop() = 0;
+};
+
+// array stack derived of abstract stack class
+template <typename StackType> class GenericArrayStack : public GenericStack<StackType> {
     protected:
         StackType *arr = NULL;
         int size, top = 0;
     public:
-        GenericStack(int size = 5) {
+        GenericArrayStack(int size = 5) {
             this->size = size;
             this->arr = new StackType[size];
         }
-        ~GenericStack() {
+        ~GenericArrayStack() {
             delete [] this->arr;
         }
 
@@ -43,18 +55,17 @@ template <typename StackType> class GenericStack {
                 this->top--;
                 return this->arr[this->top];
             }
-            else
-                return 1;
-        }
-
-        void printArr() {
-            cout << this->arr << endl;
+            else{
+                cout << "EMPTY!" << endl;
+                StackType x;
+                return x;
+            }
         }
 };
 
-template <typename T> class PalindromeStack : public GenericStack<T> {
+template <typename T> class PalindromeStack : public GenericArrayStack<T> {
     public:
-        PalindromeStack(int size = 5) : GenericStack<T>(size) {}
+        PalindromeStack(int size) : GenericArrayStack<T>(size) {}
         bool is_palindrome() {
             bool palindrome = true;
             forcn(i, palindrome, this->size/2) {
@@ -63,8 +74,59 @@ template <typename T> class PalindromeStack : public GenericStack<T> {
             }
             return palindrome;
         }
+
         int getSize() {
             return this->size;
+        }
+
+        void printArr() {
+            cout << this->arr << endl;
+        }
+};
+
+template <typename T, typename T2> class PostfixStack : public GenericArrayStack<T> {
+    public:
+        PostfixStack(int size = 5) : GenericArrayStack<T>(size) {}
+
+        void push(T2 x) {
+            bool digit = true;
+            forcn(i, digit, x.size()){
+                if( ! isdigit(x[i]) )
+                    digit = false;
+            }
+            if (digit){
+                int y = stoi(x);
+                GenericArrayStack<T>::push(y);
+            }
+            else{
+                if(x == "+") {
+                   int a = this->pop(), b = this->pop();
+                   int c = a + b;
+                   this->GenericArrayStack<T>::push(c);
+                }
+                else if(x == "-") {
+                   int a = this->pop(), b = this->pop();
+                   int c = a - b;
+                   this->GenericArrayStack<T>::push(c);
+                }
+                else if(x == "*") {
+                   int a = this->pop(), b = this->pop();
+                   int c = a * b;
+                   this->GenericArrayStack<T>::push(c);
+                }
+                else if(x == "/") {
+                   int a = this->pop(), b = this->pop();
+                   int c = a / b;
+                   this->GenericArrayStack<T>::push(c);
+                }
+            }
+        }
+
+        void printArr() {
+            forn(i, this->top) {
+                cout << this->arr[i] << " ";
+            }
+            cout << endl;
         }
 };
 
@@ -74,22 +136,35 @@ void useStackPalindrome() {
     forn(i, s.size()) {
         stack->push(s[i]);
     }
+
+    cout << "stack = ";
     stack->printArr();
-    cout << "pop: " << stack->pop() << endl;
     while (!stack->empty()) {
         cout << "pop: " << stack->pop() << endl;
     }
-    
-    cout << "pop: " << stack->pop() << endl;
 
-    cout << "size of string: " << s.size() << endl;
-    cout << "size of stack: " << s.size() << endl;
     cout << "palindromo? " << boolalpha << stack->is_palindrome() << endl;
     
     delete stack;
 }
 
+void usePostfixStack(string s) {
+    string scp;
+    scp = s;
+    int pos = 0;
+    PostfixStack<int, string>* stack = new PostfixStack<int, string>(s.size());
+
+    while((pos = s.find(' ')) != string::npos) {
+        stack->push(s.substr(0, pos));
+        s.erase(0, pos + 1);
+    }
+    stack->push(s);
+    stack->printArr();
+}
+
 int main() {
-    useStackPalindrome();
+    // useStackPalindrome();
+    usePostfixStack("2 3 5 * +");
+    usePostfixStack("2 3 + 5 *");
     return 0;
 }
