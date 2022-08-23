@@ -137,20 +137,18 @@ void useStackPalindrome() {
         stack->push(s[i]);
     }
 
+    cout << "palindromo? " << boolalpha << stack->is_palindrome() << endl;
     cout << "stack = ";
     stack->printArr();
     while (!stack->empty()) {
         cout << "pop: " << stack->pop() << endl;
     }
 
-    cout << "palindromo? " << boolalpha << stack->is_palindrome() << endl;
     
     delete stack;
 }
 
 void usePostfixStack(string s) {
-    string scp;
-    scp = s;
     int pos = 0;
     PostfixStack<int, string>* stack = new PostfixStack<int, string>(s.size());
 
@@ -163,7 +161,7 @@ void usePostfixStack(string s) {
 }
 
 int main() {
-    // useStackPalindrome();
+    useStackPalindrome();
     usePostfixStack("2 3 5 * +");
     usePostfixStack("2 3 + 5 *");
     return 0;
