@@ -9,70 +9,66 @@
 
 using namespace std;
 
-class Stack {
+template <typename T> class GenericStack {
     private:
-        int size, index = 0;
-        char *arr = NULL;
+        T *arr = NULL;
+        int size, top = 0;
     public:
-        Stack (int size=5) {
+        GenericStack(int size = 5) {
             this->size = size;
-            this->arr = new char[size];
+            this->arr = new T[size];
         }
-        ~Stack () {
-            delete [] arr;
+        ~GenericStack() {
+            delete [] this->arr;
         }
 
         bool full() {
-            return index == size;
+            return this->top == this->size;
         }
 
         bool empty() {
-            return index == 0;
+            return this->top == 0;
         }
 
-        void push(char x) {
+        void push(T x) {
             if (! this->full()) {
-                arr[index] = x;
-                index++;
+                this->arr[this->top] = x;
+                this->top++;
             }
             else
                 cout << "full" << endl;
         }
 
-        char pop() {
+        T pop() {
             if (! this->empty()) {
-                index--;
-                char a = arr[index];
+                this->top--;
+                T a = this->arr[this->top];
                 return a;
             }
             else
-                cout << "lleno" << endl;
                 return '\0';
         }
 
-        bool is_palindrome() {
-            bool palindrome = true;
-            forcn(i, palindrome, size/2) {
-                if (arr[i] != arr[index - 1 - i])
-                    palindrome = false;
-            }
-            return palindrome;
-        }
-
         void printArr() {
-            cout << arr << endl;
+            cout << this->arr << endl;
         }
 };
 
-
 int main() {
     string s = "reconocer";
-    Stack *stack = new Stack(s.size());
+    GenericStack <char> *stack = new GenericStack<char>(s.size());
     forn(i, s.size()) {
         stack->push(s[i]);
     }
-    cout << "palindromo?? " << boolalpha << stack->is_palindrome() << endl;
+    stack->printArr();
     cout << "pop: " << stack->pop() << endl;
+    while (!stack->empty()) {
+        cout << "pop: " << stack->pop() << endl;
+    }
+    
+    cout << "pop: " << stack->pop() << endl;
+    
+    delete stack;
 
     return 0;
 }
