@@ -99,7 +99,6 @@ template <typename T, typename T2> class PostfixStack : public GenericArrayStack
                 GenericArrayStack<T>::push(y);
             }
             else{
-                this->printArr();
                 if(x == "+") {
                    int a = this->pop(), b = this->pop();
                    int c = a + b;
@@ -128,6 +127,40 @@ template <typename T, typename T2> class PostfixStack : public GenericArrayStack
                 cout << this->arr[i] << " ";
             }
             cout << endl;
+        }
+};
+
+template <typename T> class CheckStack : public GenericArrayStack<T> {
+    private:
+        int parenthesis, sqbrackets, braces;
+    public:
+        CheckStack(int size = 5) : GenericArrayStack<T>(size) {
+            this->parenthesis = 0;
+            this->sqbrackets = 0;
+            this->braces = 0;
+        }
+        void push(T x) {
+            this->check(x);
+            GenericArrayStack<T>::push(x);
+        }
+
+        void check(T s) {
+            if (s == "(")
+                this->parenthesis++;
+            else if (s == ")")
+                this->parenthesis--;
+            else if (s == "[")
+                this->sqbrackets++;
+            else if (s == "]")
+                this->sqbrackets--;
+            else if (s == "{")
+                this->braces++;
+            else if (s == "}")
+                this->braces--;
+        }
+
+        bool status() {
+            return 0 == this->parenthesis && 0 == this->sqbrackets && 0 == this->braces;
         }
 };
 
@@ -161,10 +194,20 @@ void usePostfixStack(string s) {
     stack->printArr();
 }
 
+void useCheckStack(string s) {
+    CheckStack<string>* stack = new CheckStack<string>(s.size());
+    forn(i, s.size()) {
+        stack->push(s.substr(i, 1));
+    }
+    cout << "status: " << boolalpha << stack->status() << endl;
+}
+
 int main() {
     useStackPalindrome();
     usePostfixStack("2 3 5 * +");
     usePostfixStack("2 3 + 5 *");
     usePostfixStack("2 3 + 4 5 + * 9 4 - /");
+    useCheckStack("({())}[]()");
+    useCheckStack("({s(.)),}[)");
     return 0;
 }
