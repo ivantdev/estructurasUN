@@ -81,7 +81,7 @@ class PostfixStack(GenericArrayStack):
         elif(x == "-"):
             a = self.pop()
             b = self.pop()
-            c = a - b
+            c = b - a
             super().push(c)
         elif(x == "*"):
             a = self.pop()
@@ -91,11 +91,11 @@ class PostfixStack(GenericArrayStack):
         elif(x == "/"):
             a = self.pop()
             b = self.pop()
-            c = a / b
+            c = b / a
             super().push(c)
     
     def getArr(self):
-        return super().__arr
+        return self.arr
             
 
 def usePalindromeStack():
@@ -105,19 +105,18 @@ def usePalindromeStack():
         stack.push(i)
     print('array: ', stack.getArr(),'\nes palindromo?', stack.is_palindrome())
 
-def usePostFixStack(s):
+def usePostfixStack(s):
     s = s.split()
     stack = PostfixStack(len(s))
     for i in s:
         stack.push(i)
     print('resultado: ', stack.pop())
-    print(stack.getArr())
         
 def main():
-    # usePalindromeStack()
-    usePostFixStack("2 3 5 * +")
-    
-    usePostFixStack("2 3 + 5 *")
+    usePalindromeStack()
+    usePostfixStack("2 3 5 * +")
+    usePostfixStack("2 3 + 5 *")
+    usePostfixStack("2 3 + 4 5 + * 9 4 - /")
     
 if __name__ == "__main__":
     main()

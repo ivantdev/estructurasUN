@@ -99,6 +99,7 @@ template <typename T, typename T2> class PostfixStack : public GenericArrayStack
                 GenericArrayStack<T>::push(y);
             }
             else{
+                this->printArr();
                 if(x == "+") {
                    int a = this->pop(), b = this->pop();
                    int c = a + b;
@@ -106,7 +107,7 @@ template <typename T, typename T2> class PostfixStack : public GenericArrayStack
                 }
                 else if(x == "-") {
                    int a = this->pop(), b = this->pop();
-                   int c = a - b;
+                   int c = b - a;
                    this->GenericArrayStack<T>::push(c);
                 }
                 else if(x == "*") {
@@ -116,7 +117,7 @@ template <typename T, typename T2> class PostfixStack : public GenericArrayStack
                 }
                 else if(x == "/") {
                    int a = this->pop(), b = this->pop();
-                   int c = a / b;
+                   int c = b / a;
                    this->GenericArrayStack<T>::push(c);
                 }
             }
@@ -164,5 +165,6 @@ int main() {
     useStackPalindrome();
     usePostfixStack("2 3 5 * +");
     usePostfixStack("2 3 + 5 *");
+    usePostfixStack("2 3 + 4 5 + * 9 4 - /");
     return 0;
 }
