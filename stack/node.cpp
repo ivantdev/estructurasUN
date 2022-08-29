@@ -21,7 +21,7 @@ template <typename T> class Node {
         }
 
         ~Node() {
-            cout << "eliminando nodo: " << typeid(T).name() << endl;
+            cout << "eliminando nodo tipo: " << typeid(T).name() << endl;
             delete next;
         }
         
@@ -73,7 +73,7 @@ template <typename T> class Stack {
         void printStack() {
             Node<T> *aux = this->top;
             while (aux->getNext() != NULL) {
-                cout << aux->getData() << endl;
+                cout << aux->getData() << " ";
                 aux = aux->getNext();
             }
             cout << aux->getData() << endl;
@@ -81,14 +81,17 @@ template <typename T> class Stack {
         }
 };
 
-int main() {
+void test() {
     Stack<int> stack = Stack<int>();
     stack.push(5);
     stack.push(14);
     stack.push(50);
+    cout << "imprimiendo stack:\t";
     stack.printStack();
-    cout << "pop: " << stack.pop() << endl;
-    cout << "pop: " << stack.pop() << endl;
+    cout << endl;
+    cout << "pop: " << stack.pop() << endl << endl;
+    cout << "pop: " << stack.pop() << endl << endl;
+    cout << "imprimiendo stack:\t";
     stack.printStack();
 
     Stack<string>* stack2 = new Stack<string>();
@@ -96,6 +99,29 @@ int main() {
     forn(i, s.size()) {
         stack2->push(s[i]);
     }
+    
+    cout << "imprimiendo stack2:\t";
     stack2->printStack();
     delete stack2;
+}
+
+void undoColor() {
+    vector<string> colors {"Blue", "Red", "Green"};
+    Stack<string>* stack = new Stack<string>();
+    stack->push(colors[1]);
+    cout << "seleccionado color: " << colors[1] << endl;
+    stack->push(colors[0]);
+    cout << "seleccionado color: " << colors[0] << endl;
+    
+    cout << "deshaciendo selección de color: " << stack->pop() << endl;
+    cout << "colores seleccinados(primero es el actual): ";
+    stack->printStack();
+    cout << endl;
+
+    
+}
+
+int main() {
+    // test();
+    undoColor();
 }
