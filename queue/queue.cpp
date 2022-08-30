@@ -68,10 +68,16 @@ template <typename T> class Queue {
             this->size = n;
             this->count = 0;
         }
+
+        ~Queue() {
+            delete front, rear;
+        }
+
         void enqueue(T i) {
             if (! this->full()){
+                cout << "encolando: " << i << endl;
                 Node<T>* n = new Node<T>(i);
-                
+
                 if(this->rear != NULL) {
                     this->rear->setNext(n);
                     this->rear = n;
@@ -80,19 +86,25 @@ template <typename T> class Queue {
                     this->front = n;
                 }
             } else {
-                cout << "llenoo!" << endl;
+                throw invalid_argument("Full Queue");
             }
         }
 
         T dequeue() {
+            T a;
             if(! this->empty()) {
-                this->front++;
-                this->count--;
+                a = this->front->getData();
+                Node<T>* aux = this->front;
+                this->front = this->front->getNext();
+                aux->setNext(NULL);
+                delete aux;
             } else {
-                cout << "vacio!" << endl;
+                throw invalid_argument("Empty Queue");
                 T a;
-                return a;
             }
+            if(this->empty())
+                this->rear = NULL;
+            return a;
         }
 
         bool full() {
@@ -100,7 +112,11 @@ template <typename T> class Queue {
         }
 
         bool empty() {
-            return this->count == 0;
+            return this->front == NULL;
+        }
+
+        T getData() {
+            return this->front->getData();
         }
 
         void print() {
@@ -115,15 +131,19 @@ template <typename T> class Queue {
 
 
 int main() {
-    Queue<int>* cola = new Queue<int>(4);
-    cola->dequeue();
-    cola->enqueue(1);
-    cola->enqueue(2);
-    cola->enqueue(3);
-    cola->enqueue(4);
-    cola->enqueue(4);
-    cola->print();
-    cout << "dequeue: " <<  cola->dequeue() << endl;
-    cout << "dequeue: " <<  cola->dequeue() << endl;
+    Queue<char>* queue = new Queue<char>(100);
+    queue->enqueue('u');
+    queue->enqueue('n');
+    queue->enqueue('a');
+    queue->enqueue('l');
+    queue->enqueue('!');
+
+    cout << "la cola tiene lo siguiente:  ";
+    queue->print();
+    cout << "dequeue: " <<  queue->dequeue() << endl;
+    cout << "dequeue: " <<  queue->dequeue() << endl;
+    cout << "primer elemento de la cola: " << queue->getData() << endl;
+
+    delete queue;
     return 0;
 }
