@@ -8,56 +8,6 @@
 
 using namespace std;
 
-// template <typename T> class Queue {
-//     private:
-//         int front, rear, size, count;
-//         T* data = NULL;
-//     public:
-//         Queue(int n) {
-//             this->data = new T[n];
-//             this->front = 1;
-//             this->rear = 0;
-//             this->size = n;
-//             this->count = 0;
-//         }
-//         void enqueue(T i) {
-//             if (! this->full()){
-//                 this->data[this->rear] = i;
-//                 this->rear = (this->rear + 1) % this->size;
-//                 this->count++;
-//             } else {
-//                 cout << "llenoo!" << endl;
-//             }
-//         }
-
-//         T dequeue() {
-//             if(! this->empty()) {
-//                 this->front++;
-//                 this->count--;
-//                 return this->data[this->front-2];
-//             } else {
-//                 cout << "vacio!" << endl;
-//                 T a;
-//                 return a;
-//             }
-//         }
-
-//         bool full() {
-//             return this->count == this->size;
-//         }
-
-//         bool empty() {
-//             return this->count == 0;
-//         }
-
-//         void print() {
-//             cout << endl;
-//             forn(i, size){
-//                 cout << data[i] << endl;
-//             }
-//             cout << endl;
-//         }
-// };
 template <typename T> class Queue {
     private:
         int size, count;
@@ -79,7 +29,7 @@ template <typename T> class Queue {
                 Node<T>* n = new Node<T>(i);
 
                 if(this->rear != NULL) {
-                    this->rear->setNext(n);
+                    this->rear->next = n;
                     this->rear = n;
                 } else {
                     this->rear = n;
@@ -93,10 +43,10 @@ template <typename T> class Queue {
         T dequeue() {
             T a;
             if(! this->empty()) {
-                a = this->front->getData();
+                a = this->front->data;
                 Node<T>* aux = this->front;
-                this->front = this->front->getNext();
-                aux->setNext(NULL);
+                this->front = this->front->next;
+                aux->next = NULL;
                 delete aux;
             } else {
                 throw invalid_argument("Empty Queue");
@@ -116,16 +66,16 @@ template <typename T> class Queue {
         }
 
         T getData() {
-            return this->front->getData();
+            return this->front->data;
         }
 
         void print() {
             Node<T> *aux = this->front;
-            while (aux->getNext() != NULL) {
-                cout << aux->getData() << " ";
-                aux = aux->getNext();
+            while (aux->next != NULL) {
+                cout << aux->data << " ";
+                aux = aux->next;
             }
-            cout << aux->getData() << endl;
+            cout << aux->data << endl;
         }
 };
 

@@ -21,20 +21,19 @@ template <typename T> class Stack {
 
         ~Stack() {
             delete top;
-            cout << "eliminando stack: " << typeid(T).name() << endl;
         }
 
         void push(T x) {
             Node<T>* n = new Node<T>(x);
-            n->setNext(this->top);
+            n->next = this->top;
             this->top = n;
             this->size++;
         }
 
         T pop() {
-            Node<T>* n = this->top->getNext();
-            this->top->setNext(NULL);
-            T a = this->top->getData();
+            Node<T>* n = this->top->next;
+            this->top->next = NULL;
+            T a = this->top->data;
             Node<T>* m = new Node<T>(a);
             delete this->top;
             this->top = n;
@@ -44,11 +43,11 @@ template <typename T> class Stack {
         
         void printStack() {
             Node<T> *aux = this->top;
-            while (aux->getNext() != NULL) {
-                cout << aux->getData() << " ";
-                aux = aux->getNext();
+            while (aux->next != NULL) {
+                cout << aux->data << " ";
+                aux = aux->next;
             }
-            cout << aux->getData() << endl;
+            cout << aux->data << endl;
             
         }
 };

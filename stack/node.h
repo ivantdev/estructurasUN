@@ -3,28 +3,13 @@
 using namespace std;
 
 template <typename T> class Node {
-    private:
-        T data;
-        Node<T>* next = NULL;
     public:
+        T data;
+        Node<T>* next;
+        Node<T>* prev;
         Node(T x) {
+            this->next = NULL;
+            this->prev = NULL;
             this->data = x;
-        }
-
-        ~Node() {
-            cout << "eliminando nodo tipo: " << typeid(T).name() << endl;
-            delete next;
-        }
-        
-        T getData() {
-            return this->data;
-        }
-
-        void setNext(Node<T>* n) {
-            this->next = n;
-        }
-
-        Node<T>* getNext() {
-            return this->next;
         }
 };
