@@ -12,4 +12,8 @@ template <typename T> class Node {
             this->prev = NULL;
             this->data = x;
         }
+        Node() {
+            this->next = NULL;
+            this->prev = NULL;
+        }
 };
