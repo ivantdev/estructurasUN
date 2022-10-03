@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"src/package"
+	node "src/package"
 )
 
 func main() {
