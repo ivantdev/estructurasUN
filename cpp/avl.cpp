@@ -177,20 +177,16 @@ template <typename T> class BinarySearchTreeAVL {
             if(balance < -1) {
                 if(balance_right == -1) {
                     this->rotateLeft(node);
-                    cout << "rotacion simple" << endl;
                 } else if(balance_right == 1) {
                     this->rotateRightLeft(node);
                     this->adjustHeight(node->parent);
-                    cout << "rotacion doble" << endl;
                 }
             } else if(balance > 1) {
                 if(balance_left == 1) {
                     this->rotateRight(node);
-                    cout << "rotacion simple" << endl;
                 } else if(balance_left == -1){
                     this->rotateLeftRight(node);
                     this->adjustHeight(node->parent);
-                    cout << "rotacion doble" << endl;
                 }
             }
             if(parent != NULL) return this->rebalance(parent);
@@ -260,6 +256,7 @@ template <typename T> class BinarySearchTreeAVL {
             Node<T>* parent = node->parent;
 
             if(node->left == NULL && node->right == NULL) {
+                if(parent == NULL) this->root = NULL;
                 if(parent != NULL && parent->left == node) {
                     parent->left = NULL;
                 }
@@ -270,6 +267,7 @@ template <typename T> class BinarySearchTreeAVL {
                 delete node;
                 return;
             } else if(node->left != NULL && node->right == NULL) {
+                if(parent == NULL) this->root = node->left;
                 if(parent != NULL && parent->left == node) {
                     parent->left = node->left;
                 }
@@ -280,6 +278,7 @@ template <typename T> class BinarySearchTreeAVL {
                 delete node;
                 return;
             } else if(node->right != NULL && node->left == NULL) {
+                if(parent == NULL) this->root = node->right;
                 if(parent != NULL && parent->left == node) {
                     parent->left = node->right;
                 }
@@ -296,11 +295,12 @@ template <typename T> class BinarySearchTreeAVL {
                 node->data = maxi->data;
                 this->remove(maxi);
             }
+            if(parent != NULL) return this->rebalance(parent);
         }
 
         void inOrder(Node<T>* node) {
             if(node->left != NULL) this->inOrder(node->left);
-            cout << node->data << " con balance de: \t" << this->getBalance(node) << endl;
+            cout << node->data << " ";
             if(node->right != NULL) this->inOrder(node->right);
         }
 
@@ -410,9 +410,11 @@ int main() {
     bst->insertAVL(82);
     bst->insertAVL(66);
 
-    bst->adjustHeight(bst->root);
-    cout << "balance: " << bst->root->height << endl;
+    cout << "root: " << bst->root->data << endl;
+    bst->remove(bst->root);
     bst->inOrder(bst->root);
     cout << endl;
+    cout << "root: " << bst->root->data << endl;
+
     return 0;
 }
